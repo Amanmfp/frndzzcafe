@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frndzz Café
 
-## Getting Started
+Production-style pizza & fast-food ordering site built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **Material UI**.
 
-First, run the development server:
+Orders are sent to your café via **WhatsApp** — no backend or payments required.
+
+## Features
+
+- Mobile-first food-delivery style UI (search, category chips, bestsellers)
+- Sticky category navigation with scroll-to-section on the menu
+- Add to cart with quantity controls and confirmation animation
+- Cart drawer (MUI Drawer) with subtotal, delivery fee, and total
+- Checkout form with validation
+- WhatsApp order message generation via `NEXT_PUBLIC_WHATSAPP_NUMBER`
+- Cart persistence in `localStorage`
+- Order success screen with unique order ID
+
+## Setup
+
+```bash
+npm install
+cp .env.example .env.local
+```
+
+Edit `.env.local`:
+
+```bash
+NEXT_PUBLIC_WHATSAPP_NUMBER=919876543210
+```
+
+Use the full international number **digits only** (country code + number, no `+` or spaces).
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## WhatsApp configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The checkout flow calls `createWhatsAppOrderUrl()` in `src/lib/whatsapp.ts`, which:
 
-## Learn More
+1. Builds a readable order message
+2. URL-encodes it
+3. Opens `https://wa.me/{NUMBER}?text={MESSAGE}`
 
-To learn more about Next.js, take a look at the following resources:
+Never hardcode the restaurant number in components — keep it in env.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/           # Routes (home, menu, offers, about, checkout, order-success)
+  components/    # UI (header, cart drawer, product cards, checkout)
+  context/       # CartProvider
+  data/          # Sample menu
+  lib/           # Cart math, currency, order ID, WhatsApp helpers
+  theme/         # MUI theme
+  types/         # Shared TypeScript types
+```
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Production build         |
+| `npm run start` | Serve production build   |
+| `npm run lint`  | Run ESLint               |
