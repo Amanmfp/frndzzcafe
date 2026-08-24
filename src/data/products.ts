@@ -121,7 +121,7 @@ export const products: Product[] = [
     description: "Buttery garlic bread sticks with herbs.",
     price: 129,
     image:
-      "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=800&q=80",
+      "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?w=800&q=80",
     category: "snacks",
     isVeg: true,
     isBestseller: true,

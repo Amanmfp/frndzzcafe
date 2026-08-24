@@ -69,7 +69,7 @@ export function CheckoutForm() {
       }
     };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError(null);
 
@@ -104,6 +104,25 @@ export function CheckoutForm() {
         createdAt: new Date().toISOString(),
       };
 
+      // 1) Send order details to café email first (required)
+      const emailRes = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+      });
+
+      const emailJson = (await emailRes.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+
+      if (!emailRes.ok || emailJson.ok === false) {
+        throw new Error(
+          emailJson.error ||
+            "Could not send order email. Please try again in a moment.",
+        );
+      }
+
       const url = createWhatsAppOrderUrl(order);
 
       sessionStorage.setItem(
@@ -115,7 +134,7 @@ export function CheckoutForm() {
         }),
       );
 
-      // Open WhatsApp with all form + order details pre-filled to café number
+      // 2) Open WhatsApp + confirmation
       openWhatsApp(url);
       clearCart();
       router.push(`/order-success?id=${encodeURIComponent(order.id)}`);
@@ -123,7 +142,7 @@ export function CheckoutForm() {
       setSubmitError(
         err instanceof Error
           ? err.message
-          : "Could not open WhatsApp. Please try again.",
+          : "Could not place order. Please try again.",
       );
       setLoading(false);
     }
@@ -308,7 +327,7 @@ export function CheckoutForm() {
             "&:hover": { bgcolor: "#1ebe57", backgroundImage: "none" },
           }}
         >
-          {loading ? "Opening WhatsApp…" : "Confirm & Send on WhatsApp"}
+          {loading ? "Placing order & emailing café…" : "Confirm & Place Order"}
         </Button>
         <Typography
           variant="caption"
@@ -317,8 +336,8 @@ export function CheckoutForm() {
           mt={1.5}
           textAlign="center"
         >
-          Your name, phone, address and order are sent to Frndzz Café on
-          WhatsApp. No payment is taken on this site.
+          Order details are emailed to Frndzz Café, then WhatsApp opens for a
+          quick confirm. No payment is taken on this site.
         </Typography>
       </Box>
     </Box>

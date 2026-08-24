@@ -52,8 +52,9 @@ export function OrderSuccessClient() {
           ) : null}
         </Typography>
         <Typography variant="body2" color="text.secondary" maxWidth={400}>
-          Your delivery details and order were sent to the café on WhatsApp.
-          Please tap <strong>Send</strong> in WhatsApp if it opened.
+          Your order is placed. Details were emailed to Frndzz Café and opened
+          on WhatsApp. Please tap <strong>Send</strong> in WhatsApp if it
+          opened.
         </Typography>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} pt={1}>
           {whatsappUrl && (

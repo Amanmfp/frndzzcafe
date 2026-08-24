@@ -6,6 +6,7 @@ import { Hero } from "@/components/home/Hero";
 import { CravingChips } from "@/components/home/CravingChips";
 import { BestsellerCarousel } from "@/components/home/BestsellerCarousel";
 import { MenuSection } from "@/components/home/MenuSection";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import {
   getBestsellers,
   getProductsByCategory,
@@ -97,9 +98,12 @@ export default function HomePage() {
                 variant="contained"
                 size="large"
                 sx={{
-                  bgcolor: "white",
-                  color: "primary.main",
-                  "&:hover": { bgcolor: "rgba(255,255,255,0.92)" },
+                  bgcolor: "rgba(0,0,0,0.28)",
+                  color: "#fff",
+                  "&:hover": {
+                    bgcolor: "rgba(0,0,0,0.4)",
+                    color: "#fff",
+                  },
                   px: 3.5,
                   flexShrink: 0,
                 }}
@@ -110,6 +114,7 @@ export default function HomePage() {
           </Box>
         </Stack>
       </Container>
+      <WhatsAppFloat />
     </>
   );
 }
